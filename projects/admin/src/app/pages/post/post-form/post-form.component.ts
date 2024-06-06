@@ -36,7 +36,7 @@ export class PostFormComponent {
 
   ngOnInit() {
     this.initForm();
-    if (this.router.url !== '/post/add') {
+    if(!this.router.url.includes('/post/add')) {
       this.checkIsEditPost();
     }
   }
@@ -53,7 +53,7 @@ export class PostFormComponent {
     } else {
       this.isEdit = false;
       this.postService.selectedPost.next(null);
-      this.router.navigate(['/post/list']);
+      this.router.navigate(['.../list'], { relativeTo: this.route });
     }
   }
 
@@ -80,7 +80,7 @@ export class PostFormComponent {
               confirmButtonText: 'OK',
             }).then((result) => {
               if (result?.isConfirmed) {
-                this.router.navigate(['/post/list']);
+                this.router.navigate(['.../list'], { relativeTo: this.route });
               }
             });
           }
@@ -106,7 +106,7 @@ export class PostFormComponent {
             }).then((result) => {
               if (result?.isConfirmed) {
                 this.postService.selectedPost.next(null);
-                this.router.navigate(['/post/list']);
+                this.router.navigate(['.../list'], { relativeTo: this.route });
               }
             });
           }
@@ -120,7 +120,7 @@ export class PostFormComponent {
 
   handleBackPostList() {
     this.postService.selectedPost.next(null);
-    this.router.navigate(['/post/list']);
+    this.router.navigate(['.../list'], { relativeTo: this.route });
   }
 
   getErrorMessage(controlName: string): string {

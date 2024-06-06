@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { PostProps } from '../../../types/post';
 import { PostService } from '../../../services/post.service';
 import { MatButtonModule } from '@angular/material/button';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import Swal from 'sweetalert2';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -30,6 +30,7 @@ export class PostListComponent {
 
   private subs!: Subscription;
   router = inject(Router);
+  route = inject(ActivatedRoute);
   private postService = inject(PostService);
   posts: PostProps[] = [];
   isLoading: boolean = false;
@@ -66,12 +67,12 @@ export class PostListComponent {
   }
 
   handleAddPost() {
-    this.router.navigate(['/post/add']);
+    this.router.navigate(['../add'], { relativeTo: this.route });
   }
 
   handleEditPost(id: number, post: PostProps) {
     this.postService.selectedPost.next(post);
-    this.router.navigate([`/post/edit/${id}`]);
+    this.router.navigate([`../edit/${id}`], { relativeTo: this.route });
   }
 
   handleDeletePost(id: number, post: PostProps) {
