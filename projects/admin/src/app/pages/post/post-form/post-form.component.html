@@ -14,6 +14,11 @@
     }
   </mat-form-field>
   <div class="action-button">
-    <button mat-raised-button color="primary" (click)="handleAddPost()">Add Post</button>
+    @if (isEdit) {
+    <button mat-raised-button color="primary" (click)="handleEditPost()">Update Post</button>
+    } @else {
+        <button mat-raised-button color="primary" (click)="handleAddPost()">Add Post</button>
+        }
+        <button mat-raised-button color="warn" (click)="handleBackPostList()">Cancel</button>
   </div>
 </form>
