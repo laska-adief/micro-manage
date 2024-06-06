@@ -7,6 +7,7 @@ import { PostService } from '../../../services/post.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-post-list',
@@ -63,7 +64,36 @@ export class PostListComponent {
 
   handleEditPost(id: number, post: PostProps) {
     this.postService.selectedPost.next(post);
-    this.router.navigate([`/post/edit/${id}`])
+    this.router.navigate([`/post/edit/${id}`]);
+  }
+
+  handleDeletePost(id: number, post: PostProps) {
+    Swal.fire({
+      icon: 'question',
+      title: 'Are you sure want to delete this post?',
+      html: `<b>Title</b>: ${post?.title}`,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No',
+      showCancelButton: true
+    }).then((result) => {
+      if (result?.isConfirmed) {
+        this.postService.deletePost(id).subscribe({
+          next: (value) => {
+            if (value) {
+              Swal.fire({
+                icon: 'success',
+                title: 'Post Deleted',
+                confirmButtonText: 'OK',
+              }).then((result) => {
+                if (result?.isConfirmed) {
+                  this.getPosts();
+                }
+              });
+            }
+          },
+        });
+      }
+    });
   }
 
   ngOnDestroy() {
