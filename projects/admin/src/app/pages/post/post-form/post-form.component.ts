@@ -93,7 +93,11 @@ export class PostFormComponent {
   }
 
   handleEditPost() {
-    if (this.postId) {
+    if (this.postForm.invalid) {
+      this.postForm.markAllAsTouched();
+    }
+
+    if (this.postId && this.postForm.valid) {
       const id = parseInt(this.postId);
       this.postService.editPost(id, this.postForm.value).subscribe({
         next: (value) => {
