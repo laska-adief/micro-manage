@@ -8,7 +8,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { PostService } from '../../../services/post.service';
 import { PostProps } from '../../../types/post';
@@ -30,9 +30,31 @@ export class PostFormComponent {
   fb = inject(FormBuilder);
   postForm!: FormGroup;
   postService = inject(PostService);
+  route = inject(ActivatedRoute);
+  isEdit: boolean = false;
+  postId: string | null = '';
 
   ngOnInit() {
     this.initForm();
+    if (this.router.url !== '/post/add') {
+      this.checkIsEditPost();
+    }
+  }
+
+  checkIsEditPost() {
+    this.postId = this.route.snapshot.paramMap.get('id');
+    const selectedPost = this.postService.selectedPost.value;
+    if (selectedPost?.id?.toString() === this.postId) {
+      this.isEdit = true;
+      this.postForm.patchValue({
+        title: selectedPost?.title,
+        body: selectedPost?.body,
+      });
+    } else {
+      this.isEdit = false;
+      this.postService.selectedPost.next(null);
+      this.router.navigate(['/post/list']);
+    }
   }
 
   initForm() {
@@ -48,14 +70,13 @@ export class PostFormComponent {
     }
 
     if (this.postForm.valid) {
-      console.log('value', this.postForm.value);
       this.postService?.addPost(this.postForm.value).subscribe({
         next: (value: PostProps) => {
           if (value) {
             Swal.fire({
               icon: 'success',
               title: 'Post Added!',
-              html: `Title: ${value?.title} <br> Body: ${value?.body}`,
+              html: `<b>Title</b>: ${value?.title} <br> <b>Body</b>: ${value?.body}`,
               confirmButtonText: 'OK',
             }).then((result) => {
               if (result?.isConfirmed) {
@@ -69,6 +90,37 @@ export class PostFormComponent {
         },
       });
     }
+  }
+
+  handleEditPost() {
+    if (this.postId) {
+      const id = parseInt(this.postId);
+      this.postService.editPost(id, this.postForm.value).subscribe({
+        next: (value) => {
+          if (value) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Post Updated!',
+              html: `<b>Title</b>: ${value?.title} <br> <b>Body</b>: ${value?.body}`,
+              confirmButtonText: 'OK',
+            }).then((result) => {
+              if (result?.isConfirmed) {
+                this.postService.selectedPost.next(null);
+                this.router.navigate(['/post/list']);
+              }
+            });
+          }
+        },
+        error: (error) => {
+          console.log('error', error);
+        },
+      });
+    }
+  }
+
+  handleBackPostList() {
+    this.postService.selectedPost.next(null);
+    this.router.navigate(['/post/list']);
   }
 
   getErrorMessage(controlName: string): string {
