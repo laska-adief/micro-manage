@@ -2,9 +2,13 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
+  {
     path: 'dashboard',
-    loadComponent: () =>
-      import('dashboard/Component').then((m) => m.AppComponent),
+    loadChildren: () => import('dashboard/routes').then((m) => m.routes),
   },
   {
     path: 'admin',
