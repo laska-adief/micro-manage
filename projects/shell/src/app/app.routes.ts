@@ -1,6 +1,4 @@
-import { loadRemoteModule } from '@angular-architects/module-federation';
 import { Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 
 export const routes: Routes = [
   {
@@ -10,6 +8,6 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    loadComponent: () => import('admin/Component').then((m) => m.AppComponent),
+    loadChildren: () => import('admin/routes').then((m) => m.routes),
   },
 ];

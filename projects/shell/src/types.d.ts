@@ -1,2 +1,2 @@
-declare module 'admin/Component';
-declare module 'dashboard/Component';
+declare module 'admin/*';
+declare module 'dashboard/*';
