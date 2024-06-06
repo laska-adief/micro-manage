@@ -1,0 +1,19 @@
+<form [formGroup]="postForm">
+  <mat-form-field appearance="outline">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title" />
+    @if (postForm.get('title')?.touched || postForm.get('title')?.dirty) {
+    <mat-error>{{getErrorMessage('title')}}</mat-error>
+    }
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Body</mat-label>
+    <textarea matInput formControlName="body"></textarea>
+    @if (postForm.get('body')?.touched || postForm.get('body')?.dirty) {
+    <mat-error>{{getErrorMessage('body')}}</mat-error>
+    }
+  </mat-form-field>
+  <div class="action-button">
+    <button mat-raised-button color="primary" (click)="handleAddPost()">Add Post</button>
+  </div>
+</form>
