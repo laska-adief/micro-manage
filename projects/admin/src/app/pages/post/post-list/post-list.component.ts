@@ -58,7 +58,12 @@ export class PostListComponent {
   }
 
   handleAddPost() {
-    this.router.navigate(['/post/form']);
+    this.router.navigate(['/post/add']);
+  }
+
+  handleEditPost(id: number, post: PostProps) {
+    this.postService.selectedPost.next(post);
+    this.router.navigate([`/post/edit/${id}`])
   }
 
   ngOnDestroy() {
