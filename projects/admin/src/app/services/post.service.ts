@@ -24,4 +24,8 @@ export class PostService {
   editPost(id: number, post: PostProps) {
     return this.http.patch<PostProps>(this.BASE_URL + '/' + id, post);
   }
+
+  deletePost(id: number) {
+    return this.http.delete(this.BASE_URL + '/' + id);
+  }
 }
