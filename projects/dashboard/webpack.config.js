@@ -33,6 +33,7 @@ module.exports = {
       filename: "remoteEntry.js",
       exposes: {
         "./Component": "./projects/dashboard/src/app/app.component.ts",
+        "./routes": "./projects/dashboard/src/app/app.routes.ts",
       },
 
       // For hosts (please adjust)
