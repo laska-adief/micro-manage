@@ -36,8 +36,15 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="loading">
+      <th mat-header-cell *matHeaderCellDef colspan="100%">
+        <mat-spinner class="loading-spinner"></mat-spinner>
+      </th>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-header-row *matHeaderRowDef="['loading']" [hidden]="!isLoading"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [hidden]="isLoading"></tr>
   </table>
 
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">

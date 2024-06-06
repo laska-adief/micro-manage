@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import Swal from 'sweetalert2';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-post-list',
@@ -18,6 +19,7 @@ import Swal from 'sweetalert2';
     MatButtonModule,
     RouterLink,
     MatIconModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './post-list.component.html',
   styleUrl: './post-list.component.scss',
@@ -30,6 +32,7 @@ export class PostListComponent {
   router = inject(Router);
   private postService = inject(PostService);
   posts: PostProps[] = [];
+  isLoading: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -42,18 +45,22 @@ export class PostListComponent {
   }
 
   getPosts() {
+    this.isLoading = true;
     this.subs = this.postService.getPosts().subscribe({
       next: (value) => {
         if (value) {
+          this.isLoading = false;
           this.posts = value;
           this.dataSource.data = this.posts;
         } else {
+          this.isLoading = false;
           this.posts = [];
           this.dataSource.data = [];
         }
       },
       error: (error) => {
         console.log('error', error);
+        this.isLoading = false;
       },
     });
   }
@@ -74,7 +81,7 @@ export class PostListComponent {
       html: `<b>Title</b>: ${post?.title}`,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
-      showCancelButton: true
+      showCancelButton: true,
     }).then((result) => {
       if (result?.isConfirmed) {
         this.postService.deletePost(id).subscribe({
