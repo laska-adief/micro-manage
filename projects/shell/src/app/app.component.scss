@@ -34,11 +34,11 @@ nav ul {
     a {
       color: #333;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
       transition: all 200ms ease-in-out;
 
       &:hover {
-        color: darkblue;
+        color: rgb(0, 0, 176);
       }
 
     }
@@ -46,7 +46,7 @@ nav ul {
 }
 
 .link-active {
-  color: darkblue;
+  color: rgb(0, 0, 176) !important;
 }
 
 footer {
