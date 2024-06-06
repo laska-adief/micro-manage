@@ -13,4 +13,8 @@ export class PostService {
   getPosts() {
     return this.http.get<PostProps[]>(this.BASE_URL);
   }
+
+  addPost(post: PostProps) {
+    return this.http.post<PostProps>(this.BASE_URL, post);
+  }
 }
