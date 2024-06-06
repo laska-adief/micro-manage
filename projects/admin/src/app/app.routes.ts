@@ -18,7 +18,11 @@ export const routes: Routes = [
         component: PostListComponent,
       },
       {
-        path: 'form',
+        path: 'add',
+        component: PostFormComponent,
+      },
+      {
+        path: 'edit/:id',
         component: PostFormComponent,
       },
       {
